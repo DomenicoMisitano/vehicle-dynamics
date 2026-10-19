@@ -97,7 +97,7 @@ Engine torque $T_e(n_e)$ is obtained by linear interpolation. During normal driv
 
 $$
 F_{\mathrm{traction}}=
-\min\!\left(\frac{T_e(n_e)i_g i_d\eta}{r_w},\;\mu_{\mathrm{road}}mg\right).
+\min\left(\frac{T_e(n_e)i_g i_d\eta}{r_w},\mu_{\mathrm{road}}mg\right).
 $$
 
 Here $i_g$ is the selected gear ratio, $i_d$ the final drive ratio, $\eta$ the transmission efficiency and $r_w$ the wheel radius. The grip limit is a first approximation; axle load distribution and load transfer are not modelled.
