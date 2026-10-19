@@ -77,7 +77,6 @@ F_{\mathrm{drag}}=-\frac{1}{2}\rho C_d A\,v_{\mathrm{rel}}|v_{\mathrm{rel}}|,
 $$
 $$
 F_{\mathrm{rolling}}=-C_{rr}mg\,\operatorname{sgn}(v),
-\qquad
 $$
 $$
 F_{\mathrm{slope}}=-mg\sin\theta.
