@@ -72,14 +72,15 @@ $$
 The resistance terms are implemented as signed forces:
 
 $$
-F_{\mathrm{drag}}=-\frac{1}{2}\rho C_d A\,v_{\mathrm{rel}}|v_{\mathrm{rel}}|,
-\qquad
+F_{\mathrm{drag}} = -\frac{1}{2}\rho C_d A\,v_{\mathrm{rel}}|v_{\mathrm{rel}}|
 $$
+
 $$
-F_{\mathrm{rolling}}=-C_{rr}mg\,\operatorname{sgn}(v),
+F_{\mathrm{rolling}} = -C_{rr}mg\,\operatorname{sgn}(v)
 $$
+
 $$
-F_{\mathrm{slope}}=-mg\sin\theta.
+F_{\mathrm{slope}} = -mg\sin\theta
 $$
 
 The rolling resistance expression uses a simplified normal load of $mg$. The current wind assumption is $v_{\mathrm{rel}}=v+10\,\mathrm{m/s}$.
