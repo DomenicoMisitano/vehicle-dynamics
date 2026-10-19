@@ -1,12 +1,12 @@
 from dynamics.data_managing.motion_step import update_motion_step
 from dynamics.traction_managing.traction import traction_force
-from data_managing.data_plotting import plot_data
-from data_managing.periodic_data import show_data
+from dynamics.data_managing.data_plotting import plot_data
+from dynamics.data_managing.periodic_data import show_data
 from dynamics.data_managing.total_force import tot_force
-from dynamics.traction_managing.traction_with_gear_selection import traction_force_with_gear_selection
 from dynamics.gear_management.gear_selection import select_gear
 from dynamics.gear_management.torque_interruption import simulate_torque_interruption
 from dynamics.traction_managing.RPM_calculator import rpm_calculator
+from dynamics.gear_management.clutch_engagement_sequence import run_clutch_engagement_sequence
 
 density = 1.225
 c_drag = 0.3
@@ -36,11 +36,27 @@ position = 0
 positions = []
 times = []
 velocities = []
+gear_ratios = [5.087, 2.991, 2.035, 1.594, 1.286, 1.000]
 
 
 for i in range(int(t_tot / dt)):
-    if gear == select_gear(velocity, gear, i_diff, mu, eta, wheel_radius, mass, traction_force(velocity, gear, i_diff, eta, wheel_radius, mu, mass), mu_gear, r_f, F_smax, time, dt, rpm_calculator(velocity, gear, i_diff, wheel_radius, mu), wheel_radius, relativevelocity, position, velocities, positions, times):
-        F_t, gear = traction_force_with_gear_selection(velocity, gear, i_diff, eta, mu, wheel_radius, mass)
+    if time >= t_tot:
+        break
+
+    previous_gear = gear
+
+    RPM = rpm_calculator(velocity, gear, i_diff, wheel_radius, mu)
+
+    gear, time, velocity, relativevelocity, position = select_gear(
+        velocity, gear, mu, eta, mass,
+        traction_force(velocity, gear, i_diff, eta, wheel_radius, mu, mass),
+        mu_gear, r_f, F_smax, time, dt, RPM, wheel_radius,
+        relativevelocity, position, velocities, positions, times,
+        i_gear, i_diff
+    )
+
+    if gear == previous_gear:
+        F_t = traction_force(velocity, gear, i_diff, eta, wheel_radius, mu, mass)
 
         F_tot, gear = tot_force(density, c_drag, area, relativevelocity, c_rr, mass, velocity, angle, gear, i_diff, eta, mu, wheel_radius)
 
@@ -60,7 +76,10 @@ for i in range(int(t_tot / dt)):
             velocity, relativevelocity, time, position = simulate_torque_interruption(times, velocities, positions, time, velocity, position, F_t, mass, dt, density, c_drag,
                                 area, relativevelocity, c_rr, angle)
 
-        gear = gear + 1
+        F_t, time, velocity, relativevelocity, position = run_clutch_engagement_sequence(
+            traction_force( velocity, gear, i_diff, eta, wheel_radius, mu, mass), mu_gear, eta, r_f, F_smax, time, dt, RPM,
+            wheel_radius, mass, velocity, relativevelocity, position,
+            velocities, positions, times, gear_ratios[gear], i_diff)
 
         RPM = rpm_calculator(velocity, gear, i_diff, wheel_radius, mu)
 

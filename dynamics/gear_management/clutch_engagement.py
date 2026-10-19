@@ -1,10 +1,9 @@
 import numpy as np
 
 from dynamics.data_managing.motion_step import update_motion_step
-from modello import i_gear, i_diff
 
 
-def simulate_clutch_engagement(clutch_traction, mu, eta, r_f, F_smax, time, dt, RPM, v, wheel_radius, mass, velocity, relativevelocity, position, velocities, positions, times):
+def simulate_clutch_engagement(clutch_traction, mu, eta, r_f, F_smax, time, dt, RPM, wheel_radius, mass, velocity, relativevelocity, position, velocities, positions, times, i_gear, i_diff):
     t_ramp = 0.25
 
     F_s = F_smax * (0.5 * np.sin(np.pi * (time / t_ramp) - np.pi/2) + 0.5)
